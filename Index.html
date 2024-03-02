@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minecraft Example</title>
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        height: 100vh;
+    }
+
+    #gameContainer {
+        position: relative;
+    }
+
+    canvas {
+        display: block;
+    }
+
+    #inventory {
+        position: absolute;
+        bottom: 10px;
+        width: 80%;
+        height: 50px;
+        background-color: #333;
+        border: 2px solid #666;
+        border-radius: 5px;
+    }
+
+    #inventoryItems {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: 100%;
+    }
+
+    .inventoryItem {
+        width: 40px;
+        height: 40px;
+        background-color: #aaa;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<div id="gameContainer">
+    <canvas id="gameCanvas"></canvas>
+    <div id="inventory">
+        <div id="inventoryItems">
+            <!-- Add inventory items here -->
+            <div class="inventoryItem"></div>
+            <div class="inventoryItem"></div>
+            <div class="inventoryItem"></div>
+            <!-- Add more inventory items as needed -->
+        </div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const blockSize = 30; // Size of each block
+    const worldWidth = 20;
+    const worldHeight = 10;
+
+    const blockTypes = {
+        0: 'grass',
+        1: 'tree',
+        // Add more block types here
+    };
+
+    const world = [];
+    for (let y = 0; y < worldHeight; y++) {
+        world[y] = [];
+        for (let x = 0; x < worldWidth; x++) {
+            const blockType = Math.random() < 0.2 ? 1 : 0; // Adjust probabilities for different block types
+            world[y][x] = blockType;
+        }
+    }
+
+    function drawWorld() {
+        for (let y = 0; y < worldHeight; y++) {
+            for (let x = 0; x < worldWidth; x++) {
+                const blockType = blockTypes[world[y][x]];
+                if (blockType === 'grass') {
+                    ctx.fillStyle = '#00FF00'; // Green color for grass
+                    ctx.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
+                } else if (blockType === 'tree') {
+                    // Render tree
+                    ctx.fillStyle = '#8B4513'; // Brown color for tree trunk
+                    ctx.fillRect(x * blockSize, (y + 1) * blockSize, blockSize, blockSize * 2); // Trunk
+                    ctx.fillStyle = '#228B22'; // Green color for tree leaves
+                    ctx.fillRect((x - 1) * blockSize, y * blockSize, blockSize * 3, blockSize); // Leaves
+                    ctx.fillRect(x * blockSize, (y - 1) * blockSize, blockSize, blockSize); // Leaves
+                }
+                // Add rendering for more block types here
+            }
+        }
+    }
+
+    drawWorld();
+</script>
+</body>
+  </html>
